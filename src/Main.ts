@@ -100,7 +100,7 @@ export default class Folders2GraphPlugin extends Plugin {
 				const nodeSubFolders = this.__getNodeParentFolders(nodeId);
 
 				if (!nodeData.folderNode && nodeData.type != FOLDER_NODE_TAG && nodeSubFolders != null) {
-					nodeSubFolders.forEach(folders.add, folders);
+					nodeSubFolders.forEach((folder) => folders.add(folder));
 				}
 			});
 
@@ -211,7 +211,8 @@ export default class Folders2GraphPlugin extends Plugin {
 	 * Refresh settings and apply them to `this.settings`.
 	 */
 	private async __loadSettings() {
-		this.settings = Object.assign({}, this.settings, await this.loadData());
+		const loadedData = await this.loadData() as Partial<Settings>;
+		this.settings = Object.assign({}, this.settings, loadedData);
 	}
 
 	/**

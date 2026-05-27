@@ -69,7 +69,7 @@ export class GraphSidebarControls {
 			});
 
 		new Setting(children)
-			.setName("Hide Nodes by strings")
+			.setName("Hide nodes by strings")
 			.addToggle((component) => {
 				component
 					.setValue(this.plugin.settings.HiddenNodes)
@@ -82,9 +82,11 @@ export class GraphSidebarControls {
 			});
 
 		new Setting(children)
-			.setName("Hidden Nodes strings")
+			.setName("Hidden nodes strings")
 			.addText((text) =>
 				text
+					/* I need that placeholdee */
+					/* eslint-disable-next-line obsidianmd/ui/sentence-case */	
 					.setPlaceholder(".png .jpg")
 					.setValue(this.plugin.settings.HiddenNodesString)
 					.onChange(async (value) => {

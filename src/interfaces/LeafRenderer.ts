@@ -1,4 +1,6 @@
+import { RendererData } from "./RendererData";
+
 export type LeafRenderer = {
-	setData: Function;
-	originalSetData?: Function;
+	setData: (data: RendererData) => void;
+	originalSetData?: (data: RendererData) => void;
 };
