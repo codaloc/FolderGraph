@@ -43,6 +43,19 @@ export class GraphSidebarControls {
 		// -------------------------------------------------------------
 
 		new Setting(children)
+			.setName("Enable folder structure")
+			.addToggle((component) => {
+				component
+					.setValue(this.plugin.settings.addFolderStructure)
+					.onChange(async (value) => {
+						this.plugin.settings.addFolderStructure = value;
+
+						await this.plugin.saveSettings();
+						this.plugin.refreshGraphLeaves();
+					});
+			});
+
+		new Setting(children)
 			.setName("Hide root node")
 			.addToggle((component) => {
 				component

@@ -11,9 +11,10 @@ const FOLDER_NODE_TAG = "tag";
 
 export default class Folders2GraphPlugin extends Plugin {
 	public settings: Settings = {
+		addFolderStructure: true,
 		hideRootNode: false,
 		removeOtherLinks: true,
-		HiddenNodesString: "",
+		HiddenNodesString: ".png",
 		HiddenNodes: true,
 	};
 
@@ -104,21 +105,20 @@ export default class Folders2GraphPlugin extends Plugin {
 				}
 			});
 
-			// Add a node for each folder.
-			folders.forEach((folder) => {
-				data.nodes[folder] = {
-					type: FOLDER_NODE_TAG,
-					links: {},
-					folderNode: true,
-				};
-			});
 
-			// Remove all original graph links
-			if (this.settings.removeOtherLinks) {
-				Object.values(data.nodes).forEach((nodeData) => {
-				nodeData.links = {};
-			});
+
+			if (this.settings.addFolderStructure) {
+				// Add a node for each folder.
+				folders.forEach((folder) => {
+					data.nodes[folder] = {
+						type: FOLDER_NODE_TAG,
+						links: {},
+						folderNode: true,
+					};
+				});
 			}
+
+
 			
 
 			if (this.settings.HiddenNodes) {
@@ -134,18 +134,28 @@ export default class Folders2GraphPlugin extends Plugin {
 				});
 			}
 
+			// Remove all original graph links
+			if (this.settings.removeOtherLinks) {
+				Object.values(data.nodes).forEach((nodeData) => {
+					nodeData.links = {};
+				});
+			}
 
-			// Add the links between the nodes and the folders.
-			Object.entries(data.nodes).forEach(([nodeId, nodeData]) => {
-				if (nodeData.type != FOLDER_NODE_TAG || nodeData.folderNode) {
-					const directParent = this.__getNodeParentFolder(nodeId);
-					const parentNode = data.nodes[directParent];
+			if (this.settings.addFolderStructure) {
+				// Add the links between the nodes and the folders.
+				Object.entries(data.nodes).forEach(([nodeId, nodeData]) => {
+					if (nodeData.type != FOLDER_NODE_TAG || nodeData.folderNode) {
+						const directParent = this.__getNodeParentFolder(nodeId);
+						const parentNode = data.nodes[directParent];
 
-					if (parentNode) {
-						parentNode.links[nodeId] = true;
+						if (parentNode) {
+							parentNode.links[nodeId] = true;
+						}
 					}
-				}
-			});
+				});
+			}
+
+
 
 			if (!renderer.originalSetData) {
 				throw new Error("originalSetData is undefined.");
