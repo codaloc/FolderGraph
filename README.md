@@ -1,14 +1,11 @@
 # Folder Graph View 
 
-#### Let your folder structure bo your view graph view!
+#### Let your folder structure be your view graph view!
 
 
 > This is an [Obsidian](https://obsidian.md) plugin 
 
 This plugin, once enabled, will modify your existing obsidian graph view to add named nodes for the parent folders of every node and links between them creating a tree structure.
-
-
-
 
 ![variations of graph view](.github/assets/graphs.png)
 ### Important settings
