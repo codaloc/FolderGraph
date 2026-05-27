@@ -1,90 +1,36 @@
-# Obsidian Sample Plugin
+# Folder Graph View 
 
-This is a sample plugin for Obsidian (https://obsidian.md).
+#### Let your folder structure bo your view graph view!
 
-This project uses TypeScript to provide type checking and documentation.
-The repo depends on the latest plugin API (obsidian.d.ts) in TypeScript Definition format, which contains TSDoc comments describing what it does.
 
-This sample plugin demonstrates some of the basic functionality the plugin API can do.
-- Adds a ribbon icon, which shows a Notice when clicked.
-- Adds a command "Open modal (simple)" which opens a Modal.
-- Adds a plugin setting tab to the settings page.
-- Registers a global click event and output 'click' to the console.
-- Registers a global interval which logs 'setInterval' to the console.
+> This is an [Obsidian](https://obsidian.md) plugin 
 
-## First time developing plugins?
+This plugin, once enabled, will modify your existing obsidian graph view to add named nodes for the parent folders of every node and links between them creating a tree structure.
 
-Quick starting guide for new plugin devs:
 
-- Check if [someone already developed a plugin for what you want](https://obsidian.md/plugins)! There might be an existing plugin similar enough that you can partner up with.
-- Make a copy of this repo as a template with the "Use this template" button (login to GitHub if you don't see it).
-- Clone your repo to a local development folder. For convenience, you can place this folder in your `.obsidian/plugins/your-plugin-name` folder.
-- Install NodeJS, then run `npm i` in the command line under your repo folder.
-- Run `npm run dev` to compile your plugin from `main.ts` to `main.js`.
-- Make changes to `main.ts` (or create new `.ts` files). Those changes should be automatically compiled into `main.js`.
-- Reload Obsidian to load the new version of your plugin.
-- Enable plugin in settings window.
-- For updates to the Obsidian API run `npm update` in the command line under your repo folder.
+### Important settings
 
-## Releasing new releases
+`Existing files only` should be turned **on**, otherwise, inexistent files (typically broken links) will not be attached to file containing the link, but to the root folder (or will float around if `hide root folder node` is disabled). This is less of an issue if `hide manual links` is disabled since they will be attached to their original origin.
 
-- Update your `manifest.json` with your new version number, such as `1.0.1`, and the minimum Obsidian version required for your latest release.
-- Update your `versions.json` file with `"new-plugin-version": "minimum-obsidian-version"` so older versions of Obsidian can download an older version of your plugin that's compatible.
-- Create new GitHub release using your new version number as the "Tag version". Use the exact version number, don't include a prefix `v`. See here for an example: https://github.com/obsidianmd/obsidian-sample-plugin/releases
-- Upload the files `manifest.json`, `main.js`, `styles.css` as binary attachments. Note: The manifest.json file must be in two places, first the root path of your repository and also in the release.
-- Publish the release.
+Enable `Orphans` in the side bar, otherwise, only nodes that would already be displayed in the graph without the plugin will be in the folder tree.
 
-> You can simplify the version bump process by running `npm version patch`, `npm version minor` or `npm version major` after updating `minAppVersion` manually in `manifest.json`.
-> The command will bump version in `manifest.json` and `package.json`, and add the entry for the new version to `versions.json`
+`Attachements` **can** be enabled, however if they are stored in a standalone folder, it is recommended to enable `hide manual links` to prevent them from beeing attached to both the parent folder and the file in which they are linked from.
 
-## Adding your plugin to the community plugin list
+It is also possible to only hide certain file types (typically images) by enabling `Hiden Nodes by strings` and adding one or more file extensions separated by spaces. 
 
-- Check the [plugin guidelines](https://docs.obsidian.md/Plugins/Releasing/Plugin+guidelines).
-- Publish an initial version.
-- Make sure you have a `README.md` file in the root of your repo.
-- Make a pull request at https://github.com/obsidianmd/obsidian-releases to add your plugin.
+### Manual installation
 
-## How to use
+-  Download the latest release from [repo releases tab](https://github.com/codaloc/FolderGraph/releases),
+-   Extract the folder in your vault plugins folder (eg. `/path/to/your/vault/.obsidian/plugin`),
 
-- Clone this repo.
-- Make sure your NodeJS is at least v16 (`node --version`).
-- `npm i` or `yarn` to install dependencies.
-- `npm run dev` to start compilation in watch mode.
+or 
 
-## Manually installing the plugin
+- Clone the repository in your vault plugin folder
+- run `npm install` and `npm run build`
 
-- Copy over `main.js`, `styles.css`, `manifest.json` to your vault `VaultFolder/.obsidian/plugins/your-plugin-id/`.
+<br/>
 
-## Improve code quality with eslint
-- [ESLint](https://eslint.org/) is a tool that analyzes your code to quickly find problems. You can run ESLint against your plugin to find common bugs and ways to improve your code. 
-- This project already has eslint preconfigured, you can invoke a check by running`npm run lint`
-- Together with a custom eslint [plugin](https://github.com/obsidianmd/eslint-plugin) for Obsidan specific code guidelines.
-- A GitHub action is preconfigured to automatically lint every commit on all branches.
+Then enable the plugin under `Settings`>`Community plugins`>`Installed plugins`
 
-## Funding URL
-
-You can include funding URLs where people who use your plugin can financially support it.
-
-The simple way is to set the `fundingUrl` field to your link in your `manifest.json` file:
-
-```json
-{
-    "fundingUrl": "https://buymeacoffee.com"
-}
-```
-
-If you have multiple URLs, you can also do:
-
-```json
-{
-    "fundingUrl": {
-        "Buy Me a Coffee": "https://buymeacoffee.com",
-        "GitHub Sponsor": "https://github.com/sponsors",
-        "Patreon": "https://www.patreon.com/"
-    }
-}
-```
-
-## API Documentation
-
-See https://docs.obsidian.md
+### Credits
+Initially based on https://github.com/ratibus11/folders2graph, which is inspired by https://github.com/drPilman/obsidian-graph-nested-tags apparently also inspired by https://github.com/ratibus11/folders2graph? 
