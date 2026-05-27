@@ -128,7 +128,7 @@ export default class Folders2GraphPlugin extends Plugin {
 					.filter(Boolean);
 
 				Object.keys(data.nodes).forEach((nodeId) => {
-					if (hiddenStrings.some((str) => nodeId.contains(str))) {
+					if (hiddenStrings.some((str) => nodeId.includes(str))) {
 						delete data.nodes[nodeId];
 					}
 				});
@@ -139,7 +139,11 @@ export default class Folders2GraphPlugin extends Plugin {
 			Object.entries(data.nodes).forEach(([nodeId, nodeData]) => {
 				if (nodeData.type != FOLDER_NODE_TAG || nodeData.folderNode) {
 					const directParent = this.__getNodeParentFolder(nodeId);
-					data.nodes[directParent].links[nodeId] = true;
+					const parentNode = data.nodes[directParent];
+
+					if (parentNode) {
+						parentNode.links[nodeId] = true;
+					}
 				}
 			});
 
