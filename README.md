@@ -8,6 +8,9 @@
 This plugin, once enabled, will modify your existing obsidian graph view to add named nodes for the parent folders of every node and links between them creating a tree structure.
 
 
+
+
+![variations of graph view](.github/assets/graphs.png)
 ### Important settings
 
 `Existing files only` should be turned **on**, otherwise, inexistent files (typically broken links) will not be attached to file containing the link, but to the root folder (or will float around if `hide root folder node` is disabled). This is less of an issue if `hide manual links` is disabled since they will be attached to their original origin.
