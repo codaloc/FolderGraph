@@ -1,9 +1,9 @@
 {
-	"id": "folder-graph",
+	"id": "folder-graph-view",
 	"name": "Folder Graph View",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"minAppVersion": "0.15.0",
-	"description": "Demonstrates some of the capabilities of the Obsidian API.",
+	"description": "Replaces the link-formed graph view by a graph following the folder structure.",
 	"author": "Co",
 	"fundingUrl": "https://www.amnesty.org/en/donate/",
 	"isDesktopOnly": false

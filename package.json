@@ -1,7 +1,7 @@
 {
-	"name": "folder-graph",
-	"version": "1.0.0",
-	"description": "Obsidian extension replacing the link-formed graph view by a graph following the folder structure. ",
+	"name": "folder-graph-view",
+	"version": "1.0.1",
+	"description": "Replaces the link-formed graph view by a graph following the folder structure. ",
 	"main": "main.js",
 	"type": "module",
 	"scripts": {
