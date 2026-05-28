@@ -20,8 +20,8 @@ It is also possible to only hide certain file types (typically images) by enabli
 
 ### Manual installation
 
--  Download the latest release from [repo releases tab](https://github.com/codaloc/FolderGraph/releases),
--   Extract the folder in your vault plugins folder (eg. `/path/to/your/vault/.obsidian/plugin`),
+-  Download the three files `main.js`, `styles.css` and `manifest.json` from the lastest release under the [repo releases tab](https://github.com/codaloc/FolderGraph/releases),
+-   Add them to a folder in your vault plugins folder (eg. `/path/to/your/vault/.obsidian/plugins/`),
 
 or 
 
