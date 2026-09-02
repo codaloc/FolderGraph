@@ -1,6 +1,7 @@
 import { Plugin, WorkspaceLeaf } from "obsidian";
 import { GraphLeafWithCustomRenderer } from "interfaces/GraphLeafWithCustomRenderer";
 import { RendererData } from "interfaces/RendererData";
+import { AppWithInternalPlugins } from "interfaces/AppWithInternalPlugins";
 import { Nullable } from "types/Nullable";
 import { Settings } from "interfaces/Settings";
 import { GraphSidebarControls } from "./GraphSidebarControls";
@@ -48,11 +49,13 @@ export default class Folders2GraphPlugin extends Plugin {
 	 */
 	public override onunload(): void {
 		this.__getLeavesOfTypeGraph().forEach((leaf) => {
-			// Restablish the original data setter in the render, then delete the custom on, then reload the leaf.
+			// Restablish the renderer's original data setter and node click handler, then delete the custom ones, then reload the leaf.
 			if (leaf.view.renderer.originalSetData) {
 				leaf.view.renderer.setData = leaf.view.renderer.originalSetData;
+				leaf.view.renderer.onNodeClick = leaf.view.renderer.originalOnNodeClick;
 
 				delete leaf.view.renderer.originalSetData;
+				delete leaf.view.renderer.originalOnNodeClick;
 				this.graphSidebarControls.removeAll();
 				leaf.view.unload();
 				leaf.view.load();
@@ -70,6 +73,7 @@ export default class Folders2GraphPlugin extends Plugin {
 		leaves.forEach((leaf) => {
 			if (leaf.view.getViewType() === "graph") {
 				this.__injectDataInLeaf(leaf);
+				this.__injectNodeClickInLeaf(leaf);
 				leaf.view.unload();
 				leaf.view.load();
 				setTimeout(() => {
@@ -166,6 +170,36 @@ export default class Folders2GraphPlugin extends Plugin {
 			}
 
 			return renderer.originalSetData(data);
+		};
+	}
+
+	/**
+	 * Makes clicking a folder node reveal that folder in the file explorer, instead of
+	 * running Obsidian's default tag search for it.
+	 * @param leaf The graph leaf to render.
+	 */
+	private __injectNodeClickInLeaf(leaf: GraphLeafWithCustomRenderer): void {
+		const renderer = leaf.view.renderer;
+
+		// Store the original click handler in another property, then override it with a custom one.
+		if (renderer.originalOnNodeClick == undefined) {
+			renderer.originalOnNodeClick = renderer.onNodeClick;
+		}
+
+		renderer.onNodeClick = (event, id, type) => {
+			// Folder nodes are keyed by their path with a leading slash, eg. "/folder/subfolder".
+			// No file or tag node ID starts with a slash, so this check guarantees this is a folder node.
+			if (id.startsWith("/")) {
+				const folder = id === "/" ? this.app.vault.getRoot() : this.app.vault.getFolderByPath(id.slice(1));
+
+				if (folder) {
+					(this.app as AppWithInternalPlugins).internalPlugins
+						.getEnabledPluginById("file-explorer")
+						?.revealInFolder(folder);
+				}
+			} else {
+				return renderer.originalOnNodeClick?.(event, id, type);
+			}
 		};
 	}
 
